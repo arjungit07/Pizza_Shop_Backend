@@ -28,15 +28,25 @@ app.use(
 );
 
 
-app.use(cors({
-  origin: [
-    "https://online-pizza-delivery-app.vercel.app",
-    "http://localhost:3000"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}))
+const allowedOrigins = [
+  "https://online-pizza-delivery-app.vercel.app",
+  "http://localhost:3000"
+];
 
+app.use(cors({
+  origin: function (origin, callback) {
+    if (
+      !origin || 
+      allowedOrigins.includes(origin) || 
+      origin.includes("vercel.app")
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
 // app.use(function (req, res, next) {	
 //     res.setHeader('Access-Control-Allow-Origin', 'https://online-pizza-delivery-app.vercel.app',);    
 //     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');    
