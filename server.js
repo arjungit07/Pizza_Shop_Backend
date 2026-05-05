@@ -12,7 +12,12 @@ require("colors");
 //config
 dotenv.config();
 
-
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 
 //conection
 //
@@ -23,27 +28,24 @@ const app = express();
 app.use(morgan("dev"));
 
 app.use(cors({
-  origin: ['https://online-pizza-delivery-app.vercel.app', 'http://localhost:3000'],  // Allow both Vercel and local development
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify the allowed HTTP methods
-  credentials: true, // Include credentials if needed (e.g., cookies or authentication headers)
-}));
+  origin: [
+    "https://online-pizza-delivery-app.vercel.app",
+    "http://localhost:3000"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}))
 
-app.use(function (req, res, next) {	
-    res.setHeader('Access-Control-Allow-Origin', 'https://online-pizza-delivery-app.vercel.app',);    
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');    
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');   
-    res.setHeader('Access-Control-Allow-Credentials', true);    
-    next();
-});
+// app.use(function (req, res, next) {	
+//     res.setHeader('Access-Control-Allow-Origin', 'https://online-pizza-delivery-app.vercel.app',);    
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');    
+//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');   
+//     res.setHeader('Access-Control-Allow-Credentials', true);    
+//     next();
+// });
 
 //route
 app.use("/api/pizza", require("./router/pizzaRouter"));
-app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
 app.use("/api/users", require("./router/userRouter"));
 app.use("/api/orders", require("./router/orderRouter"));
 app.get("/", (req, res) => {
