@@ -12,13 +12,6 @@ require("colors");
 //config
 dotenv.config();
 
-app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
-
 //conection
 //
 connectDB();
@@ -26,6 +19,14 @@ const app = express();
 
 //middlewares;
 app.use(morgan("dev"));
+
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
 
 app.use(cors({
   origin: [
